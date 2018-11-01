@@ -1,5 +1,5 @@
-extern crate playground_async_book;
 extern crate failure;
+extern crate playground_async_book;
 
 use failure::Error;
 
