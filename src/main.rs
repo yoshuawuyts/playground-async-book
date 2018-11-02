@@ -43,7 +43,7 @@ fn new_executor_and_spawner() -> (Executor, Spawner) {
 impl Spawner {
   #[allow(parenthesized_params_in_types_and_modules)]
   fn spawn(&self, future: impl Future<Output = ()> + 'static + Send) {
-    let future_obj: FutureObj::new(Box::new(future));
+    let future_obj = FutureObj::new(Box::new(future));
 
     let task = Arc::new(Task {
       future: Mutex::new(Some(future_obj)),
@@ -146,11 +146,11 @@ impl TimerFuture {
 
 fn main() {
   let (executor, spawner) = new_executor_and_spawner();
-  spawner.spawn(
-    async {
-      await!(TimerFuture::new(Duration::new(2, 0)));
-    },
-  );
+  spawner.spawn(async {
+    println!("before");
+    await!(TimerFuture::new(Duration::new(2, 0)));
+    println!("after");
+  });
 
   executor.run();
 }
